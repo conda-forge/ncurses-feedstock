@@ -16,7 +16,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 7
+  number: 8
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -46,6 +46,9 @@ test:
     - test -f ${PREFIX}/lib/{{ each_ncurses_library }}.so       # [linux]
     - test -f ${PREFIX}/lib/{{ each_ncurses_library }}w.so      # [linux]
     {% endfor %}
+    - test -L ${PREFIX}/lib/libtinfo.a
+    - test -L ${PREFIX}/lib/libtinfo.dylib                     # [osx]
+    - test -L ${PREFIX}/lib/libtinfo.so                        # [linux]
 
     # Test include directories
     - test -d ${PREFIX}/include/ncurses
@@ -95,10 +98,24 @@ test:
     {% endfor %}
 
     # Test ncurses library arguments.
-    - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib -lncursesw -ltinfow $"
-    - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib -ltinfow $"
-    - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib -lncurses -ltinfo $"
-    - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib -ltinfo $"
+    - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib -lncursesw $"
+    - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib -lncursesw $"
+    - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib -lncurses $"
+    - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib -lncurses $"
+
+    # Test for tinfo symbols.
+    {% set tinfo_symbols = [
+        "cbreak",
+        "keypad",
+        "stdscr"
+    ] %}
+
+    {% for each_tinfo_symbol in tinfo_symbols %}
+    - nm "${PREFIX}/lib/libncurses.so" | grep '.* {{ each_tinfo_symbol }}$'       # [linux]
+    - nm "${PREFIX}/lib/libncursesw.so" | grep '.* {{ each_tinfo_symbol }}$'      # [linux]
+    - nm "${PREFIX}/lib/libncurses.dylib" | grep '.* _{{ each_tinfo_symbol }}$'   # [osx]
+    - nm "${PREFIX}/lib/libncursesw.dylib" | grep '.* _{{ each_tinfo_symbol }}$'  # [osx]
+    {% endfor %}
 
     # Usage tests
     - bash run_test.sh    # [osx]
