@@ -96,10 +96,10 @@ test:
     {% endfor %}
 
     # Test ncurses library arguments.
-    - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib -lncursesw -ltinfow $"
-    - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib -ltinfow $"
-    - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib -lncurses -ltinfo $"
-    - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib -ltinfo $"
+    - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib -lncursesw -ltinfow$"
+    - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib -ltinfow$"
+    - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib -lncurses -ltinfo$"
+    - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib -ltinfo$"
 
     # Usage tests
     - bash run_test.sh    # [osx]
