@@ -29,7 +29,6 @@ test:
     - pkg-config
   files:
     - run_test.sh         # [osx]
-    - run_test.py         # [osx]
   commands:
     # Test libraries
     {% set ncurses_libraries = [
@@ -103,7 +102,6 @@ test:
 
     # Usage tests
     - bash run_test.sh    # [osx]
-    - python run_test.py  # [osx]
 
 about:
   home: http://www.gnu.org/software/ncurses/
