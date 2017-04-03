@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 for USE_WIDEC in false true;
 do
     WIDEC_OPT=""
@@ -11,6 +10,8 @@ do
 
     sh ./configure \
 	    --prefix=$PREFIX \
+            --build=$BUILD \
+            --host=$HOST \
 	    --without-debug \
 	    --without-ada \
 	    --without-manpages \
