@@ -1,44 +1,60 @@
 #!/bin/bash
 
-for USE_WIDEC in false true;
-do
-    WIDEC_OPT=""
-    if [ "${USE_WIDEC}" = true ];
-    then
-        WIDEC_OPT="--enable-widec"
-    fi
+./configure \
+  --prefix=$PREFIX \
+  --build=$BUILD \
+  --host=$HOST \
+  --without-debug \
+  --without-ada \
+  --without-manpages \
+  --with-shared \
+  --disable-overwrite \
+  --enable-symlinks \
+  --enable-termcap \
+  --with-pkg-config-libdir=${PREFIX}/lib/pkgconfig \
+  --enable-pc-files \
+  --with-termlib \
+  --enable-widec
+make
+make install
 
-    sh ./configure \
-	    --prefix=$PREFIX \
-            --build=$BUILD \
-            --host=$HOST \
-	    --without-debug \
-	    --without-ada \
-	    --without-manpages \
-	    --with-shared \
-	    --with-pkg-config \
-	    --disable-overwrite \
-	    --enable-symlinks \
-	    --enable-termcap \
-	    --enable-pc-files \
-	    --with-termlib \
-	    $WIDEC_OPT
-    make
-    make install
-    make clean
-    make distclean
+if [[ $(uname -s) == Linux ]]; then
+  _SOEXT=.so
+else
+  _SOEXT=.dylib
+fi
 
-    # Provide headers in `$PREFIX/include` and
-    # symlink them in `$PREFIX/include/ncurses`
-    # and in `$PREFIX/include/ncursesw`.
-    HEADERS_DIR="${PREFIX}/include/ncurses"
-    if [ "${USE_WIDEC}" = true ];
-    then
-        HEADERS_DIR="${PREFIX}/include/ncursesw"
+# Make symlinks from the wide to the non-wide libraries.
+pushd ${PREFIX}/lib
+  for _LIB in ncurses ncurses++ form panel menu tinfo; do
+    if [[ -f lib${_LIB}w${_SOEXT} ]]; then
+      ln -s lib${_LIB}w${_SOEXT} lib${_LIB}${_SOEXT}
     fi
-    for HEADER in $(ls $HEADERS_DIR);
-    do
-        mv "${HEADERS_DIR}/${HEADER}" "${PREFIX}/include/${HEADER}"
-        ln -s "${PREFIX}/include/${HEADER}" "${HEADERS_DIR}/${HEADER}"
+    if [[ -f lib${_LIB}w.a ]]; then
+      ln -s lib${_LIB}w.a lib${_LIB}.a
+    fi
+    pushd pkgconfig
+      if [[ -f ${_LIB}w.pc ]]; then
+        ln -s ${_LIB}w.pc ${_LIB}.pc
+      fi
+    popd
+  done
+  pushd pkgconfig
+    for _PC in form formw menu menuw panel panelw ncurses ncursesw ncurses++ ncurses++w tinfo tinfow; do
+      sed -i.bak 's:include/ncursesw$:include/ncurses:g' ${_PC}.pc
+      [[ -f ${_PC}.pc.bak ]] && rm ${_PC}.pc.bak
     done
+  popd
+popd
+
+# Provide headers in `$PREFIX/include` and
+# symlink them in `$PREFIX/include/ncurses`
+# and in `$PREFIX/include/ncursesw`.
+HEADERS_DIR_W="${PREFIX}/include/ncursesw"
+HEADERS_DIR="${PREFIX}/include/ncurses"
+mkdir -p "${HEADERS_DIR}"
+for HEADER in $(ls $HEADERS_DIR_W); do
+  mv "${HEADERS_DIR_W}/${HEADER}" "${PREFIX}/include/${HEADER}"
+  ln -s "${PREFIX}/include/${HEADER}" "${HEADERS_DIR_W}/${HEADER}"
+  ln -s "${PREFIX}/include/${HEADER}" "${HEADERS_DIR}/${HEADER}"
 done
