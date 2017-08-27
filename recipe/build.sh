@@ -15,7 +15,7 @@
   --enable-pc-files \
   --with-termlib \
   --enable-widec
-make
+make -j${CPU_COUNT} ${VERBOSE_AT}
 make install
 
 if [[ $(uname -s) == Linux ]]; then
