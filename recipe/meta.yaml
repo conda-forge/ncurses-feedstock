@@ -18,7 +18,11 @@ source:
 
 build:
   skip: true  # [win]
-  number: 1
+  number: 2
+  run_exports:
+    # pretty good compat within major version
+    #  https://abi-laboratory.pro/tracker/timeline/ncurses/
+    - {{ pin_subpackage('ncurses') }}
 
 requirements:
   build:
