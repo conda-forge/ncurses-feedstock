@@ -9,6 +9,13 @@ Feedstock license: BSD 3-Clause
 
 Summary: Library for text-based user interfaces
 
+The ncurses (new curses) library is a free software
+emulation of curses in System V Release 4.0 (SVr4),
+and more. It uses terminfo format, supports pads and
+color and multiple highlights and forms characters and
+function-key mapping, and has all the other SVr4-curses
+enhancements over BSD curses. SVr4 curses is better
+known today as X/Open Curses
 
 
 Current build status
@@ -66,6 +73,7 @@ To manage the continuous integration and simplify feedstock maintenance
 Using the ``conda-forge.yml`` within this repository, it is possible to re-render all of
 this feedstock's supporting files (e.g. the CI configuration files) with ``conda smithy rerender``.
 
+For more information please check the [conda-forge documentation](https://conda-forge.org/docs/).
 
 Terminology
 ===========
