@@ -1,9 +1,32 @@
 #!/bin/bash
 
+set -x
+
+# ncurses (gen-pkgconfig.in) adds -ltinfo to ncurses.pc if any of the following conditions is true:
+# 1. No `*-Wl,-rpath,*` is found in EXTRA_LDFLAGS
+# 2. Any `*--as-needed*` is found in EXTRA_LDFLAGS
+# The build system takes care that any `-Wl,-rpath,` in LDFLAGS gets copied into EXTRA_LDFLAGS
+# (and also that any -L${PREFIX}/lib gets translated to -Wl,-rpath,${PREFIX}/lib)
+# the same is not true of -Wl,--as-needed (which is referenced only in gen-pkgconfig.in).
+# One option to fix this is to pass our LDFLAGS as EXTRA_LDFLAGS however this ends up copying across
+# all of our linker flags into the .pc file which means they are forced upon all pkg-config based
+# consumers of ncurses and that is a very bad thing indeed. If we wanted to do that we would:
+# export EXTRA_LDFLAGS=${LDFLAGS}
+# export LDFLAGS=
+# .. but instead it is better to strip off all '-Wl,-rpath,*' and '-L${PREFIX}' from LDFLAGS.
+re='^(.*)(-Wl,-rpath,[^ ]*)(.*)$'
+if [[ ${LDFLAGS} =~ $re ]]; then
+  export LDFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[3]}"
+fi
+re='^(.*)(-L[^ ]*)(.*)$'
+if [[ ${LDFLAGS} =~ $re ]]; then
+  export LDFLAGS="${BASH_REMATCH[1]}${BASH_REMATCH[3]}"
+fi
+
 ./configure \
-  --prefix=$PREFIX \
-  --build=$BUILD \
-  --host=$HOST \
+  --prefix="${PREFIX}" \
+  --build=${BUILD} \
+  --host=${HOST} \
   --without-debug \
   --without-ada \
   --without-manpages \
@@ -11,21 +34,21 @@
   --disable-overwrite \
   --enable-symlinks \
   --enable-termcap \
-  --with-pkg-config-libdir=${PREFIX}/lib/pkgconfig \
+  --with-pkg-config-libdir="${PREFIX}"/lib/pkgconfig \
   --enable-pc-files \
   --with-termlib \
   --enable-widec
 make -j${CPU_COUNT} ${VERBOSE_AT}
 make install
 
-if [[ $(uname -s) == Linux ]]; then
+if [[ ${HOST} =~ .*linux.* ]]; then
   _SOEXT=.so
 else
   _SOEXT=.dylib
 fi
 
 # Make symlinks from the wide to the non-wide libraries.
-pushd ${PREFIX}/lib
+pushd "${PREFIX}"/lib
   for _LIB in ncurses ncurses++ form panel menu tinfo; do
     if [[ -f lib${_LIB}w${_SOEXT} ]]; then
       ln -s lib${_LIB}w${_SOEXT} lib${_LIB}${_SOEXT}
@@ -58,3 +81,11 @@ for HEADER in $(ls $HEADERS_DIR_W); do
   ln -s "${PREFIX}/include/${HEADER}" "${HEADERS_DIR_W}/${HEADER}"
   ln -s "${PREFIX}/include/${HEADER}" "${HEADERS_DIR}/${HEADER}"
 done
+
+# Ensure that the code at the top that strips -L and -Wl,-rpath from LDFLAGS did its job
+# and we have ended up with a working ncursesw.pc file (i.e. one that contains -ltinfow)
+if ! cat "${PREFIX}"/lib/pkgconfig/ncursesw.pc | grep "Libs:" | grep "\-ltinfow"; then
+  echo "ERROR: ncurses gen-pkgconfig script has created a broken ncursesw.pc"
+  echo "       It does not contain '-ltinfow' in the 'Libs:' line"
+  exit 1
+fi
