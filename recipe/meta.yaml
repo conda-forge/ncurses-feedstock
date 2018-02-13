@@ -30,9 +30,6 @@ requirements:
 test:
   requires:
     - pkg-config
-  files:
-    - run_test.sh         # [osx]
-    - run_test.py         # [osx]
   commands:
     # Test libraries
     {% set ncurses_libraries = [
