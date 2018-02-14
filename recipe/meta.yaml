@@ -1,4 +1,4 @@
-{% set version = "5.9" %}
+{% set version = "6.0" %}
 
 package:
   name: ncurses
@@ -7,16 +7,19 @@ package:
 source:
   fn: ncurses-{{ version }}.tar.gz
   url: http://ftp.gnu.org/pub/gnu/ncurses/ncurses-{{ version }}.tar.gz
-  md5: 8cb9c412e5f2d96bc6f459aa8c6282a1
+  md5: ee13d052e1ead260d7c28071f46eefb1
   patches:
     # http://lists.gnu.org/archive/html/bug-ncurses/2011-04/txtkWQqiQvcZe.txt
     - fix.patch
     # http://lists.gnu.org/archive/html/bug-ncurses/2015-01/msg00016.html
     - ncurses-5.9-gcc-5.patch
+    - clang.patch
+    # This patch is not needed with GCC 4.8.5
+    #- cxx1z-remove-dynamic-exception-specifications.patch
 
 build:
   skip: true  # [win]
-  number: 10
+  number: 0
   detect_binary_files_with_prefix: true
 
 requirements:
@@ -27,9 +30,6 @@ requirements:
 test:
   requires:
     - pkg-config
-  files:
-    - run_test.sh         # [osx]
-    - run_test.py         # [osx]
   commands:
     # Test libraries
     {% set ncurses_libraries = [
@@ -96,19 +96,30 @@ test:
     {% endfor %}
 
     # Test ncurses library arguments.
-    - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib -lncursesw -ltinfow$"
-    - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib -ltinfow$"
-    - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib -lncurses -ltinfo$"
-    - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib -ltinfo$"
+    - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib.* -lncursesw -ltinfow$"
+    - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib.* -ltinfow$"
+    - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib.* -lncurses -ltinfo$"
+    - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib.* -ltinfow$"
 
     # Usage tests
     - bash run_test.sh    # [osx]
-    - python run_test.py  # [osx]
+    # Python test will not pass until it is recompiled against ncurses 6.0
+    #- python run_test.py  # [osx]
 
 about:
   home: http://www.gnu.org/software/ncurses/
   license: Free software (MIT-like)
   summary: Library for text-based user interfaces
+  description: |
+    The ncurses (new curses) library is a free software
+    emulation of curses in System V Release 4.0 (SVr4),
+    and more. It uses terminfo format, supports pads and
+    color and multiple highlights and forms characters and
+    function-key mapping, and has all the other SVr4-curses
+    enhancements over BSD curses. SVr4 curses is better
+    known today as X/Open Curses
+  doc_url: http://invisible-island.net/ncurses/NCURSES-Programming-HOWTO.html
+  dev_url: http://invisible-island.net/ncurses/
 
 extra:
   recipe-maintainers:
