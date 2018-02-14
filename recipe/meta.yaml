@@ -96,6 +96,7 @@ test:
     {% endfor %}
 
     # Test ncurses library arguments.
+    - pkg-config ncursesw --libs
     - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib .* -lncursesw$"
     - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib .* -ltinfow$"
     - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib .* -lncursesw$"
