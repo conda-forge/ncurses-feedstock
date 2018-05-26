@@ -41,7 +41,7 @@ fi
 make -j${CPU_COUNT} ${VERBOSE_AT}
 make install
 
-if [[ ${HOST} =~ .*linux.* ]]; then
+if [[ "$(uname)" == "Linux" ]]; then
   _SOEXT=.so
 else
   _SOEXT=.dylib
