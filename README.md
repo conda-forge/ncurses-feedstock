@@ -9,19 +9,28 @@ Feedstock license: BSD 3-Clause
 
 Summary: Library for text-based user interfaces
 
+The ncurses (new curses) library is a free software
+emulation of curses in System V Release 4.0 (SVr4),
+and more. It uses terminfo format, supports pads and
+color and multiple highlights and forms characters and
+function-key mapping, and has all the other SVr4-curses
+enhancements over BSD curses. SVr4 curses is better
+known today as X/Open Curses
 
 
 Current build status
 ====================
 
-Linux: [![Circle CI](https://circleci.com/gh/conda-forge/ncurses-feedstock.svg?style=shield)](https://circleci.com/gh/conda-forge/ncurses-feedstock)
-OSX: [![TravisCI](https://travis-ci.org/conda-forge/ncurses-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/ncurses-feedstock)
-Windows: ![](https://cdn.rawgit.com/conda-forge/conda-smithy/90845bba35bec53edac7a16638aa4d77217a3713/conda_smithy/static/disabled.svg)
+[![Linux](https://img.shields.io/circleci/project/github/conda-forge/ncurses-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/ncurses-feedstock)
+[![OSX](https://img.shields.io/travis/conda-forge/ncurses-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/ncurses-feedstock)
+![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
 
 Current release info
 ====================
-Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/ncurses/badges/version.svg)](https://anaconda.org/conda-forge/ncurses)
-Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/ncurses/badges/downloads.svg)](https://anaconda.org/conda-forge/ncurses)
+
+| Name | Downloads | Version | Platforms |
+| --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-ncurses-green.svg)](https://anaconda.org/conda-forge/ncurses) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/ncurses.svg)](https://anaconda.org/conda-forge/ncurses) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/ncurses.svg)](https://anaconda.org/conda-forge/ncurses) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/ncurses.svg)](https://anaconda.org/conda-forge/ncurses) |
 
 Installing ncurses
 ==================
