@@ -11,24 +11,27 @@ source:
   patches:
     # http://lists.gnu.org/archive/html/bug-ncurses/2015-01/msg00016.html
     - ncurses-5.9-gcc-5.patch
+    - cxx1z-remove-dynamic-exception-specifications.patch
+    - clang.patch
 
 build:
-  skip: true  # [win]
-  number: 0
-  detect_binary_files_with_prefix: true
+  skip: True  # [win]
+  number: 3
+  run_exports:
+    # pretty good compat within major version
+    #  https://abi-laboratory.pro/tracker/timeline/ncurses/
+    - {{ pin_subpackage('ncurses') }}
 
 requirements:
   build:
-    - toolchain
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - pkg-config
 
 test:
-  requires:
-    - pkg-config
-  # files:
-    # - run_test.sh         # [osx]
-    # Python test will not pass until it is recompiled against ncurses 6.1
-    # - run_test.py         # [osx]
+# TODO :: conda-build needs seperate test/requires_build and test/requires_host
+#  requires:
+#    - pkg-config
   commands:
     # Test libraries
     {% set ncurses_libraries = [
@@ -95,20 +98,26 @@ test:
     {% endfor %}
 
     # Test ncurses library arguments.
-    - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib .*-lncurses -ltinfo$"
-    - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib .*-ltinfo$"
-    - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib .*-lncursesw -ltinfow$"
-    - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib .*-ltinfow$"
-
-    # Usage tests
-    # - bash run_test.sh    # [osx]
-    # Python test will not pass until it is recompiled against ncurses 6.1
-    # - python run_test.py  # [osx]
+    # - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib -lncursesw -ltinfow$"
+    # - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib -ltinfow$"
+    # - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib -lncurses -ltinfo$"
+    # - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib -ltinfo$"
 
 about:
   home: http://www.gnu.org/software/ncurses/
   license: Free software (MIT-like)
   summary: Library for text-based user interfaces
+
+  description: |
+    The ncurses (new curses) library is a free software
+    emulation of curses in System V Release 4.0 (SVr4),
+    and more. It uses terminfo format, supports pads and
+    color and multiple highlights and forms characters and
+    function-key mapping, and has all the other SVr4-curses
+    enhancements over BSD curses. SVr4 curses is better
+    known today as X/Open Curses
+  doc_url: http://invisible-island.net/ncurses/NCURSES-Programming-HOWTO.html
+  dev_url: http://invisible-island.net/ncurses/
 
 extra:
   recipe-maintainers:
