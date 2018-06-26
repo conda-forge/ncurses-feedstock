@@ -19,8 +19,10 @@ build:
 
 requirements:
   build:
-    - toolchain
     - pkg-config
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
 
 test:
   requires:
