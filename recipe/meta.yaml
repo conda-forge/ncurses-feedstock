@@ -5,16 +5,15 @@ package:
   version: {{ version }}
 
 source:
-  fn: ncurses-{{ version }}.tar.gz
   url: http://ftp.gnu.org/pub/gnu/ncurses/ncurses-{{ version }}.tar.gz
-  md5: 98c889aaf8d23910d2b92d65be2e737a
+  sha256: aa057eeeb4a14d470101eff4597d5833dcef5965331be3528c08d99cebaa0d17
   patches:
     # http://lists.gnu.org/archive/html/bug-ncurses/2015-01/msg00016.html
     - ncurses-5.9-gcc-5.patch
 
 build:
   skip: True  # [win]
-  number: 3
+  number: 1002
   run_exports:
     # pretty good compat within major version
     #  https://abi-laboratory.pro/tracker/timeline/ncurses/
@@ -25,6 +24,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pkg-config
+    - make
 
 test:
 # TODO :: conda-build needs seperate test/requires_build and test/requires_host
@@ -42,10 +42,8 @@ test:
     {% for each_ncurses_library in ncurses_libraries %}
     - test -f ${PREFIX}/lib/{{ each_ncurses_library }}.a
     - test -f ${PREFIX}/lib/{{ each_ncurses_library }}w.a
-    - test -f ${PREFIX}/lib/{{ each_ncurses_library }}.dylib    # [osx]
-    - test -f ${PREFIX}/lib/{{ each_ncurses_library }}w.dylib   # [osx]
-    - test -f ${PREFIX}/lib/{{ each_ncurses_library }}.so       # [linux]
-    - test -f ${PREFIX}/lib/{{ each_ncurses_library }}w.so      # [linux]
+    - test -f ${PREFIX}/lib/{{ each_ncurses_library }}${SHLIB_EXT}  # [not win]
+    - test -f ${PREFIX}/lib/{{ each_ncurses_library }}w${SHLIB_EXT}  # [not win]
     {% endfor %}
 
     # Test include directories
@@ -117,18 +115,8 @@ about:
   doc_url: http://invisible-island.net/ncurses/NCURSES-Programming-HOWTO.html
   dev_url: http://invisible-island.net/ncurses/
 
-  description: |
-    The ncurses (new curses) library is a free software
-    emulation of curses in System V Release 4.0 (SVr4),
-    and more. It uses terminfo format, supports pads and
-    color and multiple highlights and forms characters and
-    function-key mapping, and has all the other SVr4-curses
-    enhancements over BSD curses. SVr4 curses is better
-    known today as X/Open Curses
-  doc_url: http://invisible-island.net/ncurses/NCURSES-Programming-HOWTO.html
-  dev_url: http://invisible-island.net/ncurses/
-
 extra:
   recipe-maintainers:
     - jakirkham
     - jjhelmus
+    - ocefpaf
