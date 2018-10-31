@@ -6,11 +6,7 @@ Checklist
 * [ ] Used a fork of the feedstock to propose changes
 * [ ] Bumped the build number (if the version is unchanged)
 * [ ] Reset the build number to `0` (if the version changed)
-<<<<<<< HEAD
 * [ ] [Re-rendered]( https://conda-forge.org/docs/conda_smithy.html#how-to-re-render ) with the latest `conda-smithy` (Use the phrase <code>@<space/>conda-forge-admin, please rerender</code> in a comment in this PR for automated rerendering)
-=======
-* [ ] [Re-rendered]( https://conda-forge.org/docs/conda_smithy.html#how-to-re-render ) with the latest `conda-smithy`
->>>>>>> MNT: Re-rendered with conda-smithy 3.1.5 and pinning 2018.05.22
 * [ ] Ensured the license file is being packaged.
 
 <!--
