@@ -41,4 +41,7 @@ do
         mv "${HEADERS_DIR}/${HEADER}" "${PREFIX}/include/${HEADER}"
         ln -s "${PREFIX}/include/${HEADER}" "${HEADERS_DIR}/${HEADER}"
     done
+
+    # remove data files
+    rm -r ${PREFIX}/share ${PREFIX}/lib/terminfo
 done
