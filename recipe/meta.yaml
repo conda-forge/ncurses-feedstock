@@ -14,7 +14,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 1002
+  number: 1003
   detect_binary_files_with_prefix: true
   run_exports:
     # Why does python need version 6.1?? The ABI seems pretty stable
