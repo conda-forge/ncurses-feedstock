@@ -16,6 +16,10 @@ build:
   skip: true  # [win]
   number: 1002
   detect_binary_files_with_prefix: true
+  run_exports:
+    # Why does python need version 6.1?? The ABI seems pretty stable
+    # https://abi-laboratory.pro/tracker/timeline/ncurses/
+    - {{ pin_subpackage('ncurses', max_pin='x') }}
 
 requirements:
   build:
