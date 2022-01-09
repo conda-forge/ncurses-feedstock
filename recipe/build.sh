@@ -22,6 +22,8 @@ do
         w="w"
     fi
 
+    export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
+
     sh ./configure \
 	    --prefix=$PREFIX \
 	    --without-debug \
