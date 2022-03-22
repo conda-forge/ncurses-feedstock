@@ -37,6 +37,7 @@ do
 	    --enable-termcap \
 	    --enable-pc-files \
 	    --with-termlib \
+	    --with-versioned-syms \
 	    $WIDEC_OPT
 
     if [[ "$target_platform" == osx* ]]; then
