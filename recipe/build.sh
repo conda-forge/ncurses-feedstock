@@ -37,6 +37,7 @@ do
 	    --enable-termcap \
 	    --enable-pc-files \
 	    --with-termlib \
+	    --with-versioned-syms \
 	    $WIDEC_OPT
 
     if [[ "$target_platform" == osx* ]]; then
@@ -46,7 +47,7 @@ do
     fi
 
     make -j ${CPU_COUNT}
-    make install
+    make INSTALL="${BUILD_PREFIX}/bin/install -c  --strip-program=${STRIP}" install
     make clean
     make distclean
 
