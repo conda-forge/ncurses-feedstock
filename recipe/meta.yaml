@@ -28,8 +28,8 @@ requirements:
     - {{ compiler('cxx') }}
     - pkg-config
     - make
-    - libtool
-    - coreutils
+    - libtool  # [unix]
+    - coreutils  # [unix]
     - ncurses  # [build_platform != target_platform]
   host:
     # Need a separate host section so that ncurses doesn't remove -L$PREFIX/lib
