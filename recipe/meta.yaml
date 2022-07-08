@@ -10,6 +10,7 @@ source:
   sha256: 97fc51ac2b085d4cde31ef4d2c3122c21abc217e9090a43a30fc5ec21684e059
 
 build:
+  skip: true  # [unix]
   number: 2
   run_exports:
     # pretty good compat within major version
