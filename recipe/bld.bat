@@ -1,7 +1,7 @@
 :: set PKG_CONFIG_PATH=%LIBRARY_PREFIX%\share\pkgconfig
 
 :: From https://github.com/msys2/MSYS2-packages/blob/master/ncurses/PKGBUILD
-bash -ex configure ^
+bash -x configure ^
   --without-ada ^
   --with-shared ^
   --with-cxx-shared ^
