@@ -1,7 +1,9 @@
 :: set PKG_CONFIG_PATH=%LIBRARY_PREFIX%\share\pkgconfig
 
 :: From https://github.com/msys2/MSYS2-packages/blob/master/ncurses/PKGBUILD
+bash -c "echo before sed"
 bash -c 'sed -i \'s!eval `${MAKE-make} -f conftest.make 2>/dev/null | grep temp=`!${MAKE-make} -f conftest.make 2>/dev/null!g\' configure'
+bash -c "echo after sed"
 if errorlevel 1 exit 1
 
 bash -x configure ^
