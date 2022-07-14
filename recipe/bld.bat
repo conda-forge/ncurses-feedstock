@@ -2,6 +2,8 @@
 
 :: From https://github.com/msys2/MSYS2-packages/blob/master/ncurses/PKGBUILD
 bash -c 'sed -i \'s!eval `${MAKE-make} -f conftest.make 2>/dev/null | grep temp=`!${MAKE-make} -f conftest.make 2>/dev/null!g\' configure'
+if errorlevel 1 exit 1
+
 bash -x configure ^
   --without-ada ^
   --with-shared ^
