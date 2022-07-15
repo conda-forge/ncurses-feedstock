@@ -32,6 +32,7 @@ requirements:
     - libtool  # [unix]
     - coreutils  # [unix]
     - ncurses  # [build_platform != target_platform]
+    - getopt-win32  # [win]
   host:
     # Need a separate host section so that ncurses doesn't remove -L$PREFIX/lib
     - libcxx        # [osx]
