@@ -35,7 +35,7 @@ bash -x configure ^
   --without-tests
 if errorlevel 1 exit 1
 
-env SHELL=/bin/bash make
+bash -c "SHELL=/bin/bash make SHELL=/bin/bash"
 if errorlevel 1 exit 1
 
 make install
