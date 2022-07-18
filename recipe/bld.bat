@@ -35,7 +35,10 @@ bash -x configure ^
   --without-tests
 if errorlevel 1 exit 1
 
-bash -c "cp $(which bash) /tmp && make SHELL=/tmp/bash"
+bash -c "sed -i 's!$(SHELL)!/tmp/bash!g' **/Makefile*"
+if errorlevel 1 exit 1
+
+bash -c "cp $(which bash) /tmp && make"
 if errorlevel 1 exit 1
 
 make install
