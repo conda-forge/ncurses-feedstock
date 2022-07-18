@@ -5,32 +5,35 @@ bash -c "sed -i 's!eval `${MAKE-make} -f conftest.make 2>/dev/null | grep temp=`
 if errorlevel 1 exit 1
 
 bash -x configure ^
-  --without-ada ^
-  --with-shared ^
-  --with-cxx-shared ^
-  --without-manpages ^
+  --disable-mixed-case ^
   --disable-overwrite ^
-  --with-normal ^
-  --without-debug ^
-  --with-versioned-syms ^
   --disable-relink ^
   --disable-rpath ^
-  --with-ticlib ^
-  --without-termlib ^
-  --enable-widec ^
+  --disable-term-driver ^
+  --disable-termcap ^
+  --enable-colorfgbg ^
+  --enable-echo ^
   --enable-ext-colors ^
   --enable-ext-mouse ^
-  --enable-sp-funcs ^
-  --with-wrap-prefix=ncwrap_ ^
-  --enable-sigwinch ^
-  --disable-term-driver ^
-  --enable-colorfgbg ^
-  --enable-tcap-names ^
-  --disable-termcap ^
-  --disable-mixed-case ^
-  --with-pkg-config ^
   --enable-pc-files ^
-  --enable-echo
+  --enable-sigwinch ^
+  --enable-sp-funcs ^
+  --enable-tcap-names ^
+  --enable-widec ^
+  --with-cxx-shared ^
+  --with-normal ^
+  --with-pkg-config ^
+  --with-shared ^
+  --with-ticlib ^
+  --with-versioned-syms ^
+  --with-wrap-prefix=ncwrap_ ^
+  --without-ada ^
+  --without-debug ^
+  --without-manpages ^
+  --without-progs ^
+  --without-termlib ^
+  --without-tests
+
 if errorlevel 1 exit 1
 
 make
