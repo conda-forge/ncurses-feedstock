@@ -35,7 +35,10 @@ bash -x configure ^
   --without-tests
 if errorlevel 1 exit 1
 
-bash -c "make && make install"
+env SHELL=/bin/bash make
+if errorlevel 1 exit 1
+
+make install
 if errorlevel 1 exit 1
   
 :: --with-default-terminfo-dir=/usr/share/terminfo
