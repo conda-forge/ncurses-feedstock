@@ -1,9 +1,9 @@
 :: set PKG_CONFIG_PATH=%LIBRARY_PREFIX%\share\pkgconfig
 
-:: From https://github.com/msys2/MSYS2-packages/blob/master/ncurses/PKGBUILD
 bash -c "sed -i 's!eval `${MAKE-make} -f conftest.make 2>/dev/null | grep temp=`!${MAKE-make} -f conftest.make 2>/dev/null!g' configure"
 if errorlevel 1 exit 1
 
+:: Some options copied from https://github.com/msys2/MSYS2-packages/blob/master/ncurses/PKGBUILD
 bash -x configure ^
   --disable-mixed-case ^
   --disable-overwrite ^
@@ -33,13 +33,9 @@ bash -x configure ^
   --without-progs ^
   --without-termlib ^
   --without-tests
-
 if errorlevel 1 exit 1
 
-make
-if errorlevel 1 exit 1
-
-make install
+bash -c "make && make install"
 if errorlevel 1 exit 1
   
 :: --with-default-terminfo-dir=/usr/share/terminfo
