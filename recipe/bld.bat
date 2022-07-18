@@ -35,7 +35,7 @@ bash -x configure ^
   --without-tests
 if errorlevel 1 exit 1
 
-bash -c "SHELL=/bin/bash make SHELL=/bin/bash"
+bash -c "cp $(which bash) /tmp && make SHELL=/tmp/bash"
 if errorlevel 1 exit 1
 
 make install
