@@ -38,7 +38,7 @@ if errorlevel 1 exit 1
 bash -c "sed -i 's!$(SHELL)!/tmp/bash!g' **/Makefile*"
 if errorlevel 1 exit 1
 
-bash -c "cp $(which bash) /tmp && make"
+bash -c "cp $(which bash) /tmp && SHELL=/tmp/bash make SHELL=/tmp/bash"
 if errorlevel 1 exit 1
 
 make install
