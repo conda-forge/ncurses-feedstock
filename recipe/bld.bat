@@ -1,3 +1,2 @@
-bash -c "pwd; ls -l . .."
-bash -ex recipe/bld.sh
+bash -ex %RECIPE_DIR%/bld.sh
 if errorlevel 1 exit 1
