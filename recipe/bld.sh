@@ -39,7 +39,7 @@ sed -i 's!eval `${MAKE-make} -f conftest.make 2>/dev/null | grep temp=`!${MAKE-m
 
 cat include/Makefile
 
-make
+make SHELL=bash
 make install
 
 # --with-default-terminfo-dir=/usr/share/terminfo
