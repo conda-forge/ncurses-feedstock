@@ -1,11 +1,11 @@
-About ncurses
-=============
+About ncurses-feedstock
+=======================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/ncurses-feedstock/blob/main/LICENSE.txt)
 
 Home: http://www.gnu.org/software/ncurses/
 
 Package license: X11 AND BSD-3-Clause
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/ncurses-feedstock/blob/main/LICENSE.txt)
 
 Summary: Library for text-based user interfaces
 
