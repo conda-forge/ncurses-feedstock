@@ -81,24 +81,3 @@ for LIB_NAME in libncurses libtinfo libform libmenu libpanel; do
     rm ${PREFIX}/lib/${LIB_NAME}.a
     rm ${PREFIX}/lib/${LIB_NAME}w.a
 done
-
-# delete case-sensitive spellings of terminals, at least on linux-64, which can
-# easily get installed on case-insensitive filesystems (e.g. through WSL), see #73
-if [[ "$target_platform" == "linux-64" ]]; then
-    # all terminals under /P are duplicates of those in /p
-    rm -rf ${PREFIX}/share/terminfo/P
-    # rest
-    declare -a TERM_NAME=(
-        "2/2621A"
-        "E/Eterm"
-        "E/Eterm-color"
-        "h/hp2621A"
-        "h/hp70092A"
-        "L/LFT-PC850"
-        "N/NCR260VT300WPP"
-        "N/NCRVT100WPP"
-    )
-    for term in "${TERM_NAME[@]}"; do
-        rm ${PREFIX}/share/terminfo/${term}
-    done
-fi
