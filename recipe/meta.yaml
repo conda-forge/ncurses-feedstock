@@ -1,17 +1,17 @@
-{% set version = "6.4" %}
+{% set version = "6_4_20240210" %}
+{% set pkg_version = ".".join(version.split("_")) %}
 
 package:
   name: ncurses
-  version: {{ version }}
+  version: {{ pkg_version }}
 
 source:
-  fn: ncurses-{{ version }}.tar.gz
-  url: http://ftp.gnu.org/pub/gnu/ncurses/ncurses-{{ version }}.tar.gz
-  sha256: 6931283d9ac87c5073f30b6290c4c75f21632bb4fc3603ac8100812bed248159
+  url: https://github.com/ThomasDickey/ncurses-snapshots/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 78d9317659c4c51efd397c394cf6563b898ed122ee4630d9c779eac659e68efb
 
 build:
   skip: true  # [win]
-  number: 2
+  number: 0
   run_exports:
     # pretty good compat within major version
     #  https://abi-laboratory.pro/tracker/timeline/ncurses/
@@ -78,14 +78,12 @@ test:
         "etip.h",
         "form.h",
         "menu.h",
-        "nc_tparm.h",
         "ncurses.h",
         "ncurses_dll.h",
         "panel.h",
         "term.h",
         "term_entry.h",
         "termcap.h",
-        "tic.h",
         "unctrl.h"
     ] %}
     {% for each_ncurses_header in ncurses_headers %}
