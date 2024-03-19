@@ -15,7 +15,7 @@ fi
 
 for USE_WIDEC in false true;
 do
-    WIDEC_OPT=""
+    WIDEC_OPT="--disable-widec"
     w=""
     if [ "${USE_WIDEC}" = true ];
     then
