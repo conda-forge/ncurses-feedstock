@@ -1,4 +1,4 @@
-{% set version = "6_4_20240210" %}
+{% set version = "6_4_20240413" %}
 {% set pkg_version = ".".join(version.split("_")) %}
 
 package:
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/ThomasDickey/ncurses-snapshots/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 78d9317659c4c51efd397c394cf6563b898ed122ee4630d9c779eac659e68efb
+  sha256: ea9a273bc405593737c9b5377e4cf20aaf7b8c5b068b2643b4b2d55b1c9550dd
 
 build:
   skip: true  # [win]
