@@ -1,4 +1,4 @@
-{% set version = "6_5" %}
+{% set version = "6_5_20240511" %}
 {% set pkg_version = ".".join(version.split("_")) %}
 
 package:
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/ThomasDickey/ncurses-snapshots/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 1600526b279b0acf42432fe31f6dfa3824a4da4262168bf8b3637660ff8c07c7
+  sha256: f1360d77c3ed8e02f2f871acfbc5445192c657a61b7e98933509ba37ef555ea4
 
 build:
   skip: true  # [win]
@@ -25,6 +25,7 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - pkg-config
     - make
