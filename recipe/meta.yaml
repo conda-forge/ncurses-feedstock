@@ -18,9 +18,8 @@ build:
     - {{ pin_subpackage('ncurses') }}
   # A C++ compiler is needed so that the cursesapp.h file is installed,
   # but the library does not need libstdc++/libc++
-  ignore_run_exports:
-    - libstdcxx-ng
-    - libcxx
+  ignore_run_exports_from:
+    - {{ compiler('cxx') }}
 
 requirements:
   build:
@@ -34,8 +33,7 @@ requirements:
     - ncurses  # [build_platform != target_platform]
   host:
     # Need a separate host section so that ncurses doesn't remove -L$PREFIX/lib
-    - libcxx        # [osx]
-    - libstdcxx-ng  # [linux]
+    - libcxx
 
 test:
   requires:
