@@ -204,6 +204,7 @@ Feedstock Maintainers
 =====================
 
 * [@fhoehle](https://github.com/fhoehle/)
+* [@h-vetinari](https://github.com/h-vetinari/)
 * [@jakirkham](https://github.com/jakirkham/)
 * [@mingwandroid](https://github.com/mingwandroid/)
 

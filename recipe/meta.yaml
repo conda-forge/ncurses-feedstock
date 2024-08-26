@@ -11,19 +11,19 @@ source:
 
 build:
   skip: true  # [win]
-  number: 0
+  number: 1
   run_exports:
     # pretty good compat within major version
     #  https://abi-laboratory.pro/tracker/timeline/ncurses/
     - {{ pin_subpackage('ncurses') }}
   # A C++ compiler is needed so that the cursesapp.h file is installed,
   # but the library does not need libstdc++/libc++
-  ignore_run_exports:
-    - libstdcxx-ng
-    - libcxx
+  ignore_run_exports_from:
+    - {{ compiler('cxx') }}
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - pkg-config
@@ -33,8 +33,7 @@ requirements:
     - ncurses  # [build_platform != target_platform]
   host:
     # Need a separate host section so that ncurses doesn't remove -L$PREFIX/lib
-    - libcxx        # [osx]
-    - libstdcxx-ng  # [linux]
+    - libcxx
 
 test:
   requires:
@@ -142,3 +141,4 @@ extra:
     - jakirkham
     - mingwandroid
     - fhoehle
+    - h-vetinari
