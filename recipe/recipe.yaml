@@ -1,0 +1,152 @@
+context:
+  version: "6_5_20240922"
+  pkg_version: ${{ version | split("_") | join(".") }}
+
+package:
+  name: ncurses
+  version: ${{ pkg_version }}
+
+source:
+  url: https://github.com/ThomasDickey/ncurses-snapshots/archive/refs/tags/v${{ version }}.tar.gz
+  sha256: 75164543acb98d7b660d1a98359a7009b092551d49c60632c4f7976647960478
+
+build:
+  skip:
+    - win
+  number: 0
+
+requirements:
+  build:
+    - ${{ stdlib('c') }}
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - pkg-config
+    - make
+    - libtool
+    - coreutils
+    - ncurses  # [build_platform != target_platform]
+
+  host:
+    # Need a separate host section so that ncurses doesn't remove -L$PREFIX/lib
+    - libcxx
+
+  # A C++ compiler is needed so that the cursesapp.h file is installed,
+  # but the library does not need libstdc++/libc++
+  ignore_run_exports:
+    from_package: 
+      - ${{ compiler('cxx') | split | first }}
+
+  run_exports:
+    # pretty good compat within major version
+    #  https://abi-laboratory.pro/tracker/timeline/ncurses/
+    - ${{ pin_subpackage('ncurses') }}
+tests:
+  - script:
+      interpreter: python
+      content: |
+        from pathlib import Path
+        import os
+        import platform
+
+        prefix = Path(os.environ["PREFIX"])
+
+        ncurses_libraries = [
+            "libncurses",
+            "libtinfo",
+            "libform",
+            "libmenu",
+            "libpanel",
+        ]
+
+        for each_ncurses_library in ncurses_libraries:
+            assert not (prefix / "lib" / f"{each_ncurses_library}.a").exists()
+            assert not (prefix / "lib" / f"{each_ncurses_library}w.a").exists()
+        if platform.system() == "Darwin":
+            assert (prefix / "lib" / f"{each_ncurses_library}.dylib").exists()
+            assert (prefix / "lib" / f"{each_ncurses_library}w.dylib").exists()
+        if platform.system() == "Linux":
+            assert (prefix / "lib" / f"{each_ncurses_library}.so").exists()
+            assert (prefix / "lib" / f"{each_ncurses_library}w.so").exists()
+
+        # Test include directories
+        assert (prefix / "include" / "ncurses").exists()
+        assert (prefix / "include" / "ncursesw").exists()
+
+        ncurses_headers = [
+            "curses.h",
+            "cursesapp.h",
+            "cursesf.h",
+            "cursesm.h",
+            "cursesp.h",
+            "cursesw.h",
+            "cursslk.h",
+            "eti.h",
+            "etip.h",
+            "form.h",
+            "menu.h",
+            "ncurses.h",
+            "ncurses_dll.h",
+            "panel.h",
+            "term.h",
+            "term_entry.h",
+            "termcap.h",
+            "unctrl.h",
+        ]
+
+        for each_ncurses_header in ncurses_headers:
+            assert (prefix / "include" / "ncurses" / each_ncurses_header).exists()
+            assert (prefix / "include" / "ncursesw" / each_ncurses_header).exists()
+            assert (prefix / "include" / each_ncurses_header).exists()
+
+        ncurses_pc_files = ["form", "menu", "ncurses++", "ncurses", "panel", "tinfo"]
+
+        for each_ncurses_pc_file in ncurses_pc_files:
+            assert (prefix / "lib" / "pkgconfig" / f"{each_ncurses_pc_file}.pc").exists()
+            print((prefix / "lib" / "pkgconfig" / f"{each_ncurses_pc_file}.pc").read_text())
+            assert (prefix / "lib" / "pkgconfig" / f"{each_ncurses_pc_file}w.pc").exists()
+            print((prefix / "lib" / "pkgconfig" / f"{each_ncurses_pc_file}w.pc").read_text())
+
+    requirements:
+      build:
+        - python
+
+  - script:
+      # Test ncurses library arguments.
+      - pkg-config ncurses --libs
+      - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib .*-lncurses -ltinfo$"
+      - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib .*-ltinfo$"
+      - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib .*-lncursesw -ltinfow$"
+      - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib .*-ltinfow$"
+    requirements:
+      run:
+        - pkg-config
+
+  - script:
+      interpreter: python
+      file: python_ncurses_test.py
+    requirements:
+      run:
+        - python
+about:
+  homepage: http://www.gnu.org/software/ncurses/
+  # See https://github.com/mirror/ncurses/blob/3ef920d65fb2d4046096131d868ae8d4bba79d46/package/debian/copyright
+  license: X11 AND BSD-3-Clause
+  license_file: COPYING
+  summary: Library for text-based user interfaces
+  description: |
+    The ncurses (new curses) library is a free software
+    emulation of curses in System V Release 4.0 (SVr4),
+    and more. It uses terminfo format, supports pads and
+    color and multiple highlights and forms characters and
+    function-key mapping, and has all the other SVr4-curses
+    enhancements over BSD curses. SVr4 curses is better
+    known today as X/Open Curses
+  documentation: http://invisible-island.net/ncurses/NCURSES-Programming-HOWTO.html
+  repository: http://invisible-island.net/ncurses/
+
+extra:
+  recipe-maintainers:
+    - jakirkham
+    - mingwandroid
+    - fhoehle
+    - h-vetinari
