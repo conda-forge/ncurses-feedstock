@@ -121,10 +121,9 @@ tests:
       run:
         - pkg-config
 
-  - script: python python_ncurses_test.py
-    files:
-      recipe:
-        - python_ncurses_test.py
+  - script:
+      interpreter: python
+      file: python_ncurses_test.py
     requirements:
       run:
         - python
