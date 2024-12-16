@@ -1,5 +1,5 @@
 context:
-  version: "6_5_20240922"
+  version: "6_5"
   pkg_version: ${{ version | split("_") | join(".") }}
 
 package:
@@ -8,12 +8,12 @@ package:
 
 source:
   url: https://github.com/ThomasDickey/ncurses-snapshots/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 75164543acb98d7b660d1a98359a7009b092551d49c60632c4f7976647960478
+  sha256: 1600526b279b0acf42432fe31f6dfa3824a4da4262168bf8b3637660ff8c07c7
 
 build:
   skip:
     - win
-  number: 0
+  number: 2
 
 requirements:
   build:
