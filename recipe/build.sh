@@ -9,10 +9,6 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
     export BUILD_CC=${CC_FOR_BUILD}
 fi
 
-if [[ $target_platform =~ osx-.* ]]; then
-    export cf_cv_mixedcase=no
-fi
-
 for USE_WIDEC in false true;
 do
     WIDEC_OPT="--disable-widec"
@@ -39,6 +35,7 @@ do
 	    --enable-pc-files \
 	    --with-termlib \
 	    --with-versioned-syms \
+	    --disable-mixed-case \
 	    $WIDEC_OPT
 
     if [[ "$target_platform" == osx* ]]; then
