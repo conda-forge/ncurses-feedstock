@@ -21,7 +21,6 @@ function-key mapping, and has all the other SVr4-curses
 enhancements over BSD curses. SVr4 curses is better
 known today as X/Open Curses
 
-
 Current build status
 ====================
 

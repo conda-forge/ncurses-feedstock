@@ -2,6 +2,7 @@ import curses
 import sys
 
 if __name__ == '__main__':
+    print("Starting ncurses test")
     if sys.stdout.isatty():
         screen = curses.initscr()
         try:
@@ -12,3 +13,5 @@ if __name__ == '__main__':
         finally:
             curses.nocbreak()
             curses.endwin()
+
+    print("Finished ncurses test")
