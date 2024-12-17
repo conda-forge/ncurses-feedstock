@@ -34,6 +34,7 @@ requirements:
   # but the library does not need libstdc++/libc++
   ignore_run_exports:
     from_package: 
+      # need to remove version pin, c.f. https://github.com/prefix-dev/rattler-build/issues/1264
       - ${{ compiler('cxx') | split | first }}
 
   run_exports:
