@@ -1,4 +1,4 @@
-{% set version = "6_5" %}
+{% set version = "6_5_20241228" %}
 {% set pkg_version = ".".join(version.split("_")) %}
 
 package:
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/ThomasDickey/ncurses-snapshots/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 1600526b279b0acf42432fe31f6dfa3824a4da4262168bf8b3637660ff8c07c7
+  sha256: 5a17a204e02e7a86ec8ba1f0af029668ab4d13ad16f98be59c08e3d14a77408a
 
 build:
   skip: true  # [win]
-  number: 1
+  number: 0
   run_exports:
     # pretty good compat within major version
     #  https://abi-laboratory.pro/tracker/timeline/ncurses/
