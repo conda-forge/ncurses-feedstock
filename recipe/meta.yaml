@@ -11,7 +11,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 2
+  number: 3
   run_exports:
     # pretty good compat within major version
     #  https://abi-laboratory.pro/tracker/timeline/ncurses/
@@ -105,6 +105,8 @@ test:
     - test -f ${PREFIX}/lib/pkgconfig/{{ each_ncurses_pc_file }}w.pc
     - cat ${PREFIX}/lib/pkgconfig/{{ each_ncurses_pc_file }}w.pc
     {% endfor %}
+
+    - test -f $PREFIX/share/terminfo/78/xterm-256color
 
     # Test ncurses library arguments.
     - pkg-config ncurses --libs
