@@ -1,17 +1,16 @@
-{% set version = "6_5" %}
-{% set pkg_version = ".".join(version.split("_")) %}
+{% set version = "6.6" %}
 
 package:
   name: ncurses
-  version: {{ pkg_version }}
+  version: {{ version }}
 
 source:
-  url: https://github.com/ThomasDickey/ncurses-snapshots/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 1600526b279b0acf42432fe31f6dfa3824a4da4262168bf8b3637660ff8c07c7
+  url: https://invisible-island.net/archives/ncurses/ncurses-{{ version }}.tar.gz
+  sha256: 355b4cbbed880b0381a04c46617b7656e362585d52e9cf84a67e2009b749ff11
 
 build:
   skip: true  # [win]
-  number: 3
+  number: 0
   run_exports:
     # pretty good compat within major version
     #  https://abi-laboratory.pro/tracker/timeline/ncurses/
