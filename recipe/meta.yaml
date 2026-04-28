@@ -2,7 +2,7 @@
 
 package:
   name: ncurses
-  version: {{ version }}
+  version: "{{ version }}"
 
 source:
   url: https://invisible-island.net/archives/ncurses/ncurses-{{ version }}.tar.gz
