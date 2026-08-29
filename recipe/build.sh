@@ -22,21 +22,21 @@ do
     export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
 
     sh ./configure \
-	    --prefix=$PREFIX \
-	    --without-debug \
-	    --without-ada \
-	    --without-manpages \
-	    --with-shared \
-	    --with-pkg-config \
-	    --with-pkg-config-libdir=$PREFIX/lib/pkgconfig \
-	    --disable-overwrite \
-	    --enable-symlinks \
-	    --enable-termcap \
-	    --enable-pc-files \
-	    --with-termlib \
-	    --with-versioned-syms \
-            --disable-mixed-case \
-	    $WIDEC_OPT
+        --prefix=$PREFIX \
+        --without-debug \
+        --without-ada \
+        --without-manpages \
+        --with-shared \
+        --with-pkg-config \
+        --with-pkg-config-libdir=$PREFIX/lib/pkgconfig \
+        --disable-overwrite \
+        --enable-symlinks \
+        --enable-termcap \
+        --enable-pc-files \
+        --with-termlib \
+        --with-versioned-syms \
+        --disable-mixed-case \
+        $WIDEC_OPT
 
     if [[ "$target_platform" == osx* ]]; then
         # When linking libncurses*.dylib, reexport libtinfo[w] so that later
