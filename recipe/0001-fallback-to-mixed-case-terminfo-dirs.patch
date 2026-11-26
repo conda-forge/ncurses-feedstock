@@ -1,0 +1,26 @@
+diff --git a/ncurses/tinfo/read_entry.c b/ncurses/tinfo/read_entry.c
+index fd5f771..8d5408c 100644
+--- a/ncurses/tinfo/read_entry.c
++++ b/ncurses/tinfo/read_entry.c
+@@ -860,6 +860,21 @@ _nc_read_tic_entry(char *filename,
+     if (make_dir_filename(filename, limit, path, name)) {
+ 	code = _nc_read_file_entry(filename, tp);
+     }
++#if !MIXEDCASE_FILENAMES
++    /*
++     * Fall back to the conventional mixed-case layout (e.g., x/xterm-kitty)
++     * so that terminfo databases written by other ncurses builds are found.
++     */
++    if (code != TGETENT_YES
++#if NCURSES_USE_TERMCAP
++	&& _nc_is_dir_path(path)
++#endif
++	&& (strlen(path) + strlen(name) + 4) <= limit) {
++	_nc_SPRINTF(filename, _nc_SLIMIT(limit)
++		    "%s/%c/%s", path, *name, name);
++	code = _nc_read_file_entry(filename, tp);
++    }
++#endif
+ #if NCURSES_USE_TERMCAP
+     if (code != TGETENT_YES) {
+ 	code = _nc_read_termcap_entry(name, tp);

@@ -7,10 +7,14 @@ package:
 source:
   url: https://invisible-island.net/archives/ncurses/ncurses-{{ version }}.tar.gz
   sha256: 355b4cbbed880b0381a04c46617b7656e362585d52e9cf84a67e2009b749ff11
+  patches:
+    # with --disable-mixed-case, also look up terminfo entries in the
+    # conventional x/xterm-kitty layout used by other databases
+    - 0001-fallback-to-mixed-case-terminfo-dirs.patch
 
 build:
   skip: true  # [win]
-  number: 1
+  number: 2
   run_exports:
     # pretty good compat within major version
     #  https://abi-laboratory.pro/tracker/timeline/ncurses/
@@ -27,7 +31,7 @@ requirements:
     - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - pkg-config
+    - pkgconf
     - make
     - libtool
     - coreutils
@@ -39,7 +43,7 @@ requirements:
 
 test:
   requires:
-    - pkg-config
+    - pkgconf
   commands:
     # Test libraries
     {% set ncurses_libraries = [
@@ -108,11 +112,11 @@ test:
     - test -f $PREFIX/share/terminfo/78/xterm-256color
 
     # Test ncurses library arguments.
-    - pkg-config ncurses --libs
-    - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib .*-lncurses -ltinfo$"
-    - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib .*-ltinfo$"
-    - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib .*-lncursesw -ltinfow$"
-    - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib .*-ltinfow$"
+    - pkg-config ncurses --keep-system-libs --libs
+    - pkg-config ncurses --keep-system-libs --libs | grep "^-L${PREFIX}/lib .*-lncurses -ltinfo$"
+    - pkg-config tinfo --keep-system-libs --libs | grep "^-L${PREFIX}/lib .*-ltinfo$"
+    - pkg-config ncursesw --keep-system-libs --libs | grep "^-L${PREFIX}/lib .*-lncursesw -ltinfow$"
+    - pkg-config tinfow --keep-system-libs --libs | grep "^-L${PREFIX}/lib .*-ltinfow$"
 
 about:
   home: http://www.gnu.org/software/ncurses/
