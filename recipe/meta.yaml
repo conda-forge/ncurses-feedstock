@@ -112,11 +112,11 @@ test:
     - test -f $PREFIX/share/terminfo/78/xterm-256color
 
     # Test ncurses library arguments.
-    - pkg-config ncurses --libs
-    - pkg-config ncurses --libs | grep "^-L${PREFIX}/lib .*-lncurses -ltinfo$"
-    - pkg-config tinfo --libs | grep "^-L${PREFIX}/lib .*-ltinfo$"
-    - pkg-config ncursesw --libs | grep "^-L${PREFIX}/lib .*-lncursesw -ltinfow$"
-    - pkg-config tinfow --libs | grep "^-L${PREFIX}/lib .*-ltinfow$"
+    - pkg-config ncurses --keep-system-libs --libs
+    - pkg-config ncurses --keep-system-libs --libs | grep "^-L${PREFIX}/lib .*-lncurses -ltinfo$"
+    - pkg-config tinfo --keep-system-libs --libs | grep "^-L${PREFIX}/lib .*-ltinfo$"
+    - pkg-config ncursesw --keep-system-libs --libs | grep "^-L${PREFIX}/lib .*-lncursesw -ltinfow$"
+    - pkg-config tinfow --keep-system-libs --libs | grep "^-L${PREFIX}/lib .*-ltinfow$"
 
 about:
   home: http://www.gnu.org/software/ncurses/
