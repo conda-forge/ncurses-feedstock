@@ -31,7 +31,7 @@ requirements:
     - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - pkg-config
+    - pkgconf
     - make
     - libtool
     - coreutils
@@ -43,7 +43,7 @@ requirements:
 
 test:
   requires:
-    - pkg-config
+    - pkgconf
   commands:
     # Test libraries
     {% set ncurses_libraries = [
